@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.ico">
+    <title>Dashboard | Ruan</title>
+    <link rel="stylesheet" href="css/dashboard-ruan.css">
+    <link rel="stylesheet" href="css/barra-lateral.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <div class="container_principal">
+        <div class="barra_lateral" id="lateral_barra"></div>
+        <div class="area_dash">
+            <div class="dash_superior">
+                <div class="bem_vindo">
+                    <span class="text_bemVindo1">
+                        Bem-vindo
+                    </span>
+                    <span class="text_bemVindo2">
+                        Calcule se as configurações do seu computador são ideais para trabalhar em um call center.
+                    </span>
+                </div>
+            </div>
+            <div class="card_monitoramento">
+                <div class="area_meio">
+                    <div class="area_meio_esquerda">
+                        <div class="painel">
+                            <div id="popup" class="popup">
+                                <span class="close" onclick="fecharPopup()">&times;</span>
+                                <p>CPU: Um processador com pelo menos 4 núcleos é uma boa escolha para lidar com
+                                    multitarefas. Processadores mais potentes podem ser necessários se houver
+                                    aplicativos mais exigentes em uso.</p>
+                                <p>RAM: Recomenda-se ter pelo menos 8 GB de RAM para garantir que o sistema possa
+                                    executar várias aplicações simultaneamente sem diminuir o desempenho.</p>
+                                <p>Disco: Um disco rígido de 500 GB ou maior pode ser adequado para armazenamento de
+                                    dados. Se possível, considerar a utilização de um SSD (unidade de estado sólido)
+                                    para o sistema operacional, pois isso pode aumentar significativamente a
+                                    velocidade
+                                    de resposta do sistema.</p>
+                            </div>
+                            <div class="area_barra">
+                                <div class="h3-progress">
+                                    <h3>Qualidade da CPU: </h3>
+                                    <h3 class="h3-margin" id="cpu"></h3>
+                                </div>
+                                <progress class="barra_painel" max="4" value="2" id="barra_cpu"></progress>
+                            </div>
+                            <div class="area_barra">
+                                <div class="h3-progress">
+                                    <h3 clas>Qualidade da RAM: </h3>
+                                    <h3 class="h3-margin" id="ram"></h3>
+                                </div>
+
+                                <progress class="barra_painel" max="8" value="4" id="barra_ram"></progress>
+                            </div>
+                            <div class="area_barra">
+                                <div class="h3-progress">
+                                    <h3>Qualidade do Disco: </h3>
+                                    <h3 class="h3-margin" id="disco"></h3>
+                                </div>
+
+                                <progress class="barra_painel" max="500" value="250" id="barra_disco"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="area_meio_direita">
+                        <div class="calculadora">
+                            <h1>Calculadora de Recursos</h1>
+                            <div class="botao_row">
+                                <button class="botao-calculadora" onclick="calcular()">Calcular</button>
+                                <div class="botao-popup">
+                                    <button onclick="abrirPopup()"><img src="assets/informacao.png"
+                                            alt="Informação"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="area_inferior">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    // Função para fazer solicitação AJAX e obter os dados do servidor
+    function calcular() {
+        // Fazer solicitação para o endpoint 'http://localhost:3333/dashboard/calcular'
+        fetch('http://localhost:3333/dashboard/calcular')
+            .then(response => response.json())  // Transformar a resposta em formato JSON
+            .then(data => {
+                // Assumindo que o resultado é um objeto com propriedades CPU, RAM, DISCO
+                const { CPU, RAM, DISCO } = data;
+
+                // Salvar os resultados no sessionStorage para uso futuro
+                sessionStorage.setItem('CPU_CALCULADORA', CPU);
+                sessionStorage.setItem('RAM_CALCULADORA', RAM);
+                sessionStorage.setItem('DISCO_CALCULADORA', DISCO);
+
+                // Atualizar os elementos HTML com os resultados
+                const cpuDiv = document.getElementById('cpu');
+                cpuDiv.textContent = ` ${CPU} Núcleos`;
+
+                const ramDiv = document.getElementById('ram');
+                ramDiv.textContent = ` ${RAM}Gb`;
+
+                const discoDiv = document.getElementById('disco');
+                discoDiv.textContent = ` ${DISCO}Gb`;
+
+                // Atualizar as barras de progresso com os valores obtidos
+                const barraCpu = document.getElementById('barra_cpu');
+                barraCpu.value = CPU
+
+                const barraRam = document.getElementById('barra_ram');
+                barraRam.value = RAM
+
+                const barraDisco = document.getElementById('barra_disco');
+                barraDisco.value = DISCO
+            })
+            .catch(error => console.error('Erro ao calcular:', error));  // Tratar erros, se houver
+    }
+
+    // Função para abrir o pop-up de informações
+    function abrirPopup() {
+        document.getElementById('popup').style.display = 'block';
+    }
+
+    // Função para fechar o pop-up de informações
+    function fecharPopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+
+</script>
+
+</html>
