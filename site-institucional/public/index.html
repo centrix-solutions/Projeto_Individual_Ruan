@@ -38,10 +38,12 @@
                                 <p>RAM: Recomenda-se ter pelo menos 8 GB de RAM para garantir que o sistema possa
                                     executar várias aplicações simultaneamente sem diminuir o desempenho.</p>
                                 <p>Disco: Um disco rígido de 500 GB ou maior pode ser adequado para armazenamento de
-                                    dados. Se possível, considerar a utilização de um SSD (unidade de estado sólido)
-                                    para o sistema operacional, pois isso pode aumentar significativamente a
-                                    velocidade
-                                    de resposta do sistema.</p>
+                                    dados.</p>
+                                <p>O gráfico de progresso exibido compara a eficiência da máquina do usuário com uma
+                                    máquina ideal em um ambiente de call center. A métrica de desempenho avaliada é a
+                                    capacidade de gerenciamento de chamadas e interações com os clientes. A linha do
+                                    usuário representa a performance da máquina específica em termos de tempo de
+                                    resposta, precisão nas respostas e eficácia na resolução de problemas.</p>
                             </div>
                             <div class="area_barra">
                                 <div class="h3-progress">
@@ -82,6 +84,20 @@
                     </div>
                 </div>
                 <div class="area_inferior">
+                    <div class="area_inferior_direita">
+                        <div class="botao-grafico">
+                            <h1>Estilos de Gráficos</h1>
+                            <button onclick="alterarTipoGrafico('line')">Gráfico de Linha</button>
+                            <button onclick="alterarTipoGrafico('scatter')">Gráfico de Dispersão</button>
+                            <button onclick="alterarTipoGrafico('bar')">Gráfico de Barras</button>
+                            <button onclick="alterarTipoGrafico('radar')">Gráfico de Radar</button>
+                        </div>
+                    </div>
+                    <div class="area_inferior_esquerda">
+                        <div class="grafico">
+                            <canvas id="graficoTempoReal" width="300px"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,19 +107,18 @@
 <script>
     // Função para fazer solicitação AJAX e obter os dados do servidor
     function calcular() {
-        // Fazer solicitação para o endpoint 'http://localhost:3333/dashboard/calcular'
         fetch('http://localhost:3333/dashboard/calcular')
-            .then(response => response.json())  // Transformar a resposta em formato JSON
+            .then(response => response.json())
             .then(data => {
-                // Assumindo que o resultado é um objeto com propriedades CPU, RAM, DISCO
+                // Destruturação dos dados obtidos
                 const { CPU, RAM, DISCO } = data;
 
-                // Salvar os resultados no sessionStorage para uso futuro
-                sessionStorage.setItem('CPU_CALCULADORA', CPU);
-                sessionStorage.setItem('RAM_CALCULADORA', RAM);
-                sessionStorage.setItem('DISCO_CALCULADORA', DISCO);
+                // Salvando os resultados no sessionStorage
+                sessionStorage.setItem('CPU', CPU);
+                sessionStorage.setItem('RAM', RAM);
+                sessionStorage.setItem('DISCO', DISCO);
 
-                // Atualizar os elementos HTML com os resultados
+                // Atualizando os elementos HTML com os resultados
                 const cpuDiv = document.getElementById('cpu');
                 cpuDiv.textContent = ` ${CPU} Núcleos`;
 
@@ -113,17 +128,17 @@
                 const discoDiv = document.getElementById('disco');
                 discoDiv.textContent = ` ${DISCO}Gb`;
 
-                // Atualizar as barras de progresso com os valores obtidos
+                // Atualizando as barras de progresso com os valores obtidos
                 const barraCpu = document.getElementById('barra_cpu');
-                barraCpu.value = CPU
+                barraCpu.value = CPU;
 
                 const barraRam = document.getElementById('barra_ram');
-                barraRam.value = RAM
+                barraRam.value = RAM;
 
                 const barraDisco = document.getElementById('barra_disco');
-                barraDisco.value = DISCO
+                barraDisco.value = DISCO;
             })
-            .catch(error => console.error('Erro ao calcular:', error));  // Tratar erros, se houver
+            .catch(error => console.error('Erro ao calcular:', error));
     }
 
     // Função para abrir o pop-up de informações
@@ -135,6 +150,88 @@
     function fecharPopup() {
         document.getElementById('popup').style.display = 'none';
     }
+
+    function alterarTipoGrafico(tipo) {
+        // Altere o tipo do gráfico
+        graficoTempoReal.config.type = tipo;
+
+        // Atualize o gráfico
+        graficoTempoReal.update();
+    }
+
+</script>
+
+<script>
+
+    var ctx = document.getElementById('graficoTempoReal').getContext('2d');
+    var graficoTempoReal = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'CPU Percent',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 2,
+                data: [],
+                fill: false
+            }, {
+                label: 'RAM Percent',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                data: [],
+                fill: false
+            }, {
+                label: 'DISCO Percent',
+                borderColor: 'rgba(255, 205, 86, 1)',
+                borderWidth: 2,
+                data: [],
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function atualizarGraficoTempoReal() {
+        fetch('http://localhost:3333/dashboard/metricas_tempo_real')
+            .then(response => response.json())
+            .then(data => {
+                if (data.cpu_percent !== null && data.ram_percent !== null && data.disco_percent !== null) {
+                    // Adiciona nova entrada de tempo
+                    graficoTempoReal.data.labels.push(new Date().toLocaleTimeString());
+
+                    // Adiciona os dados ao conjunto de dados correspondente
+                    graficoTempoReal.data.datasets[0].data.push(data.cpu_percent);
+                    graficoTempoReal.data.datasets[1].data.push(data.ram_percent);
+                    graficoTempoReal.data.datasets[2].data.push(data.disco_percent);
+
+                    // Limita o número de entradas no gráfico para 10
+                    if (graficoTempoReal.data.labels.length > 5) {
+                        graficoTempoReal.data.labels.shift();
+                        graficoTempoReal.data.datasets[0].data.shift();
+                        graficoTempoReal.data.datasets[1].data.shift();
+                        graficoTempoReal.data.datasets[2].data.shift();
+                    }
+
+                    // Atualiza o gráfico
+                    graficoTempoReal.update();
+                } else {
+                    console.error('Valores nulos recebidos.');
+                }
+            })
+            .catch(error => console.error('Erro ao obter dados para o gráfico:', error));
+    }
+
+    setInterval(atualizarGraficoTempoReal, 5000);
 
 </script>
 

@@ -28,11 +28,11 @@ body {
 /* Estilo para o card de monitoramento */
 .card_monitoramento {
     width: 91%;
-    height: 130vh;
+    height: 120vh;
     background-color: rgba(36, 36, 36, 1);
     margin: 3rem;
     position: absolute;
-    top: 58%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -39%);
     display: flex;
@@ -390,4 +390,77 @@ progress::-webkit-progress-value {
 /* Estilo para a linha de botões */
 .botao_row {
     display: flex;
+}
+
+.area_inferior_esquerda {
+    width: 60%;
+    height: 60vh;
+}
+
+.area_inferior_direita {
+    display: flex;
+    width: 40%;
+    height: 60vh;
+    justify-content: end;
+}
+
+.botao-grafico {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10%;
+    background-color: #5A34A9;
+    border-radius: 5vh;
+
+}
+
+.botao-grafico button {
+    background-color: #00000000;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5vh;
+    width: fit-content;
+    height: 8vh;
+    font-size: 4vh;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 5%;
+}
+
+.botao-grafico button:hover {
+    transform: scale(1.1);
+    background-color: white;
+    color: #5A34A9;
+}
+
+.grafico {
+    margin-left: 5%;
+    margin-top: 5%;
+}
+
+/* Personaliza a barra de rolagem */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Largura da barra de rolagem */
+    background: linear-gradient(180deg, #4B3753 0%, #4B3753 0%, #4B3753 0.01%, rgba(90, 52, 169, 0.93) 9.09%,
+            #8565C9 18.18%, rgba(180, 153, 238, 0.96) 27.27%, rgba(170, 143, 225, 0.63) 39.58%,
+            rgba(206, 185, 249, 0.93) 50%, rgba(151, 116, 222, 0.68) 57.29%, rgba(161, 122, 243, 0.85) 64.58%,
+            rgba(167, 131, 242, 0.90) 70.31%, rgba(139, 89, 245, 0.63) 81.82%, #5A34A9 90.91%, rgba(75, 55, 83, 0.99) 100%);
+    /* Barra de rolagem transparente */
+}
+
+/* Personaliza o polegar da barra de rolagem */
+::-webkit-scrollbar-thumb {
+    background-color: #5A34A9;
+    /* Cor do polegar (roxo) */
+    border-radius: 6px;
+    /* Borda arredondada do polegar */
+}
+
+/* Altera a cor do polegar da barra de rolagem quando estiver passando o mouse sobre ele */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #352e44;
 }
