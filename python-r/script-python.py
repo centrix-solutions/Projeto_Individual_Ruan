@@ -109,15 +109,15 @@ def notificar_slack(mensagem):
 
 # Verificando informações do sistema diariamente
 def verificar_info_sistema_diariamente():
-    while True:
-        # Obtendo informações do sistema
-        cpu_cores, ram_total, disco_total = obter_info_sistema()
+        while True:
+            # Obtendo informações do sistema
+            cpu_cores, ram_total, disco_total = obter_info_sistema()
 
-        # Inserindo informações no MySQL
-        inserir_info_sistema_mysql(cpu_cores, ram_total, disco_total)
+            # Inserindo informações no MySQL
+            inserir_info_sistema_mysql(cpu_cores, ram_total, disco_total)
 
-        # Aguardando 24 horas
-        time.sleep(24 * 60 * 60)
+            # Aguardando 24 horas
+            time.sleep(24 * 60 * 60)
 
     # Iniciando as funções em threads separadas
 if __name__ == "__main__":
