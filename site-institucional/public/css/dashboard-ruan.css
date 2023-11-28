@@ -28,7 +28,8 @@ body {
 /* Estilo para o card de monitoramento */
 .card_monitoramento {
     width: 91%;
-    height: 120vh;
+    min-height: 120vh;
+    height: fit-content;
     background-color: rgba(36, 36, 36, 1);
     margin: 3rem;
     position: absolute;
@@ -175,8 +176,8 @@ body {
     cursor: pointer;
 }
 
-/* Estilo para a área do meio do dashboard */
-.area_meio {
+/* Estilo para a área do topo do dashboard */
+.area_topo {
     height: fit-content;
     width: 100%;
     display: flex;
@@ -184,8 +185,8 @@ body {
     margin-top: 3%;
 }
 
-/* Estilo para a parte esquerda da área do meio */
-.area_meio_esquerda {
+/* Estilo para a parte esquerda da área do topo */
+.area_topo_esquerda {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -240,8 +241,8 @@ progress::-webkit-progress-value {
     font-weight: 500;
 }
 
-/* Estilo para a parte direita da área do meio */
-.area_meio_direita {
+/* Estilo para a parte direita da área do topo */
+.area_topo_direita {
     width: 40%;
     display: flex;
     flex-direction: row;
@@ -463,4 +464,20 @@ progress::-webkit-progress-value {
 /* Altera a cor do polegar da barra de rolagem quando estiver passando o mouse sobre ele */
 ::-webkit-scrollbar-thumb:hover {
     background-color: #352e44;
+}
+
+/* ... (Estilos para a área do meio) */
+.area_meio {
+    text-align: center;
+}
+
+/* ... (Estilos para recomendações dentro da área do meio) */
+.area_meio .recomendacao_p {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #5A34A9;
+    padding: 1%;
+    border-radius: 30px;
+    width: fit-content;
+    height: fit-content;
 }

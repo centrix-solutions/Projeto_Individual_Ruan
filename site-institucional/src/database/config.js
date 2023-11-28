@@ -20,13 +20,18 @@ var mySqlConfig = {
     host: "localhost",
     database: "projeto",
     user: "root",
-     password: "363776",
+    password: "363776",
 };
 
-
+/**
+ * Função para executar instruções SQL no MySQL ou SQL Server com base no ambiente configurado.
+ * @param {string} instrucao - A instrução SQL a ser executada.
+ * @returns {Promise} - Uma Promise que resolve com os resultados da consulta ou rejeita com um erro.
+ */
 function executar(instrucao) {
     // VERIFICA A VARIÁVEL DE AMBIENTE SETADA EM app.js
     if (process.env.AMBIENTE_PROCESSO == "producao") {
+        // Conexão e consulta no SQL Server
         return new Promise(function (resolve, reject) {
             sql.connect(sqlServerConfig).then(function () {
                 return sql.query(instrucao);
@@ -38,10 +43,11 @@ function executar(instrucao) {
                 console.log('ERRO: ', erro);
             });
             sql.on('error', function (erro) {
-                return ("ERRO NO SQL SERVER (Azure): ", erro);
+                console.log("ERRO NO SQL SERVER (Azure): ", erro);
             });
         });
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        // Conexão e consulta no MySQL
         return new Promise(function (resolve, reject) {
             var conexao = mysql.createConnection(mySqlConfig);
             conexao.connect();
@@ -54,10 +60,11 @@ function executar(instrucao) {
                 resolve(resultados);
             });
             conexao.on('error', function (erro) {
-                return ("ERRO NO MySQL WORKBENCH: ", erro.sqlMessage);
+                console.log("ERRO NO MySQL WORKBENCH: ", erro.sqlMessage);
             });
         });
     } else {
+        // Ambiente não configurado
         return new Promise(function (resolve, reject) {
             console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
             reject("AMBIENTE NÃO CONFIGURADO EM app.js")

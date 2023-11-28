@@ -2,22 +2,29 @@
 <html lang="pt-br">
 
 <head>
+    <!-- Metadados do documento -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/favicon.ico">
     <title>Dashboard | Ruan</title>
+
+    <!-- Importando folhas de estilo -->
     <link rel="stylesheet" href="css/dashboard-ruan.css">
     <link rel="stylesheet" href="css/barra-lateral.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Importando a biblioteca Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
+    <!-- Estrutura principal do corpo -->
     <div class="container_principal">
         <div class="barra_lateral" id="lateral_barra"></div>
         <div class="area_dash">
+            <!-- Seção superior do dashboard -->
             <div class="dash_superior">
                 <div class="bem_vindo">
+                    <!-- Mensagem de boas-vindas -->
                     <span class="text_bemVindo1">
                         Bem-vindo
                     </span>
@@ -26,54 +33,55 @@
                     </span>
                 </div>
             </div>
+
+            <!-- Seção de monitoramento -->
             <div class="card_monitoramento">
-                <div class="area_meio">
-                    <div class="area_meio_esquerda">
+                <div class="area_topo">
+                    <!-- Área superior esquerda -->
+                    <div class="area_topo_esquerda">
                         <div class="painel">
+                            <!-- Pop-up com informações sobre configurações -->
                             <div id="popup" class="popup">
-                                <span class="close" onclick="fecharPopup()">&times;</span>
-                                <p>CPU: Um processador com pelo menos 4 núcleos é uma boa escolha para lidar com
-                                    multitarefas. Processadores mais potentes podem ser necessários se houver
-                                    aplicativos mais exigentes em uso.</p>
-                                <p>RAM: Recomenda-se ter pelo menos 8 GB de RAM para garantir que o sistema possa
-                                    executar várias aplicações simultaneamente sem diminuir o desempenho.</p>
-                                <p>Disco: Um disco rígido de 500 GB ou maior pode ser adequado para armazenamento de
-                                    dados.</p>
-                                <p>O gráfico de progresso exibido compara a eficiência da máquina do usuário com uma
-                                    máquina ideal em um ambiente de call center. A métrica de desempenho avaliada é a
-                                    capacidade de gerenciamento de chamadas e interações com os clientes. A linha do
-                                    usuário representa a performance da máquina específica em termos de tempo de
-                                    resposta, precisão nas respostas e eficácia na resolução de problemas.</p>
+                                <!-- ... Conteúdo do pop-up ... -->
                             </div>
+
+                            <!-- Barras de progresso para CPU, RAM e Disco -->
                             <div class="area_barra">
+                                <!-- Elementos para CPU -->
                                 <div class="h3-progress">
                                     <h3>Qualidade da CPU: </h3>
                                     <h3 class="h3-margin" id="cpu"></h3>
                                 </div>
                                 <progress class="barra_painel" max="4" value="2" id="barra_cpu"></progress>
                             </div>
+
+                            <!-- Elementos para RAM -->
                             <div class="area_barra">
                                 <div class="h3-progress">
                                     <h3 clas>Qualidade da RAM: </h3>
                                     <h3 class="h3-margin" id="ram"></h3>
                                 </div>
-
                                 <progress class="barra_painel" max="8" value="4" id="barra_ram"></progress>
                             </div>
+
+                            <!-- Elementos para Disco -->
                             <div class="area_barra">
                                 <div class="h3-progress">
                                     <h3>Qualidade do Disco: </h3>
                                     <h3 class="h3-margin" id="disco"></h3>
                                 </div>
-
                                 <progress class="barra_painel" max="500" value="250" id="barra_disco"></progress>
                             </div>
                         </div>
                     </div>
-                    <div class="area_meio_direita">
+
+                    <!-- Área superior direita -->
+                    <div class="area_topo_direita">
+                        <!-- Calculadora de Recursos -->
                         <div class="calculadora">
                             <h1>Calculadora de Recursos</h1>
                             <div class="botao_row">
+                                <!-- Botões para calcular e mostrar informações -->
                                 <button class="botao-calculadora" onclick="calcular()">Calcular</button>
                                 <div class="botao-popup">
                                     <button onclick="abrirPopup()"><img src="assets/informacao.png"
@@ -83,8 +91,38 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Área do meio do dashboard -->
+                <div class="area_meio">
+                    <!-- Recomendações para configurações inadequadas -->
+                    <h1 id="recomendacao_h1" style="display: none;">Recomendações</h1>
+                    <div class="recomendacao" id="recomendacao_nucleo" style="display: none;">
+                        <!-- Recomendação para Núcleos -->
+                        <div class="recomendacao_p">
+                            <p>Seu computador possui menos de 4 núcleos. Recomendamos um processador com pelo menos 4
+                                núcleos.</p>
+                        </div>
+                    </div>
+                    <div class="recomendacao" id="recomendacao_ram" style="display: none;">
+                        <!-- Recomendação para RAM -->
+                        <p class="recomendacao_p">Sua máquina possui menos de 8GB de RAM. Recomendamos aumentar a
+                            quantidade de RAM para
+                            melhorar o desempenho em multitarefas.</p>
+                    </div>
+                    <div class="recomendacao" id="recomendacao_disco" style="display: none;">
+                        <!-- Recomendação para Disco -->
+                        <p class="recomendacao_p">O espaço de armazenamento em disco da sua máquina é inferior a 500GB.
+                            Recomendamos considerar
+                            a aquisição de um disco com capacidade maior para armazenar dados de forma mais eficiente.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Área inferior do dashboard -->
                 <div class="area_inferior">
+                    <!-- Área inferior direita -->
                     <div class="area_inferior_direita">
+                        <!-- Botões para alterar o tipo de gráfico -->
                         <div class="botao-grafico">
                             <h1>Estilos de Gráficos</h1>
                             <button onclick="alterarTipoGrafico('line')">Gráfico de Linha</button>
@@ -93,7 +131,10 @@
                             <button onclick="alterarTipoGrafico('radar')">Gráfico de Radar</button>
                         </div>
                     </div>
+
+                    <!-- Área inferior esquerda -->
                     <div class="area_inferior_esquerda">
+                        <!-- Elemento para o gráfico -->
                         <div class="grafico">
                             <canvas id="graficoTempoReal" width="300px"></canvas>
                         </div>
@@ -104,13 +145,14 @@
     </div>
 </body>
 
+<!-- Script para fazer solicitação AJAX e obter dados do servidor -->
 <script>
-    // Função para fazer solicitação AJAX e obter os dados do servidor
     function calcular() {
+        // Fazendo uma solicitação AJAX para o servidor
         fetch('http://localhost:3333/dashboard/calcular')
             .then(response => response.json())
             .then(data => {
-                // Destruturação dos dados obtidos
+                // Destruturando os dados obtidos
                 const { CPU, RAM, DISCO } = data;
 
                 // Salvando os resultados no sessionStorage
@@ -118,7 +160,7 @@
                 sessionStorage.setItem('RAM', RAM);
                 sessionStorage.setItem('DISCO', DISCO);
 
-                // Atualizando os elementos HTML com os resultados
+                // Atualizando elementos HTML com os resultados
                 const cpuDiv = document.getElementById('cpu');
                 cpuDiv.textContent = ` ${CPU} Núcleos`;
 
@@ -128,7 +170,7 @@
                 const discoDiv = document.getElementById('disco');
                 discoDiv.textContent = ` ${DISCO}Gb`;
 
-                // Atualizando as barras de progresso com os valores obtidos
+                // Atualizando barras de progresso com os valores obtidos
                 const barraCpu = document.getElementById('barra_cpu');
                 barraCpu.value = CPU;
 
@@ -137,8 +179,37 @@
 
                 const barraDisco = document.getElementById('barra_disco');
                 barraDisco.value = DISCO;
+
+                // Exibindo recomendações com base nos dados
+                exibirRecomendacoes(data.CPU, data.RAM, data.DISCO);
+                document.getElementById('recomendacao_h1').style.display = 'block';
             })
             .catch(error => console.error('Erro ao calcular:', error));
+    }
+
+    // Função para exibir recomendações
+    function exibirRecomendacoes(cpu, ram, disco) {
+        // Verificando e exibindo recomendação para Núcleos
+        if (cpu < 4) {
+            document.getElementById('recomendacao_nucleo').style.display = 'block';
+        } else {
+            document.getElementById('recomendacao_nucleo').style.display = 'none';
+        }
+
+        // Adicionando verificações e exibições para RAM e Disco conforme necessário
+        // Exemplo para RAM
+        if (ram < 8) {
+            document.getElementById('recomendacao_ram').style.display = 'block';
+        } else {
+            document.getElementById('recomendacao_ram').style.display = 'none';
+        }
+
+        // Exemplo para Disco
+        if (disco < 500) {
+            document.getElementById('recomendacao_disco').style.display = 'block';
+        } else {
+            document.getElementById('recomendacao_disco').style.display = 'none';
+        }
     }
 
     // Função para abrir o pop-up de informações
@@ -151,20 +222,21 @@
         document.getElementById('popup').style.display = 'none';
     }
 
+    // Função para alterar o tipo de gráfico
     function alterarTipoGrafico(tipo) {
-        // Altere o tipo do gráfico
+        // Alterando o tipo do gráfico
         graficoTempoReal.config.type = tipo;
 
-        // Atualize o gráfico
+        // Atualizando o gráfico
         graficoTempoReal.update();
     }
-
 </script>
 
+<!-- Script para criar e atualizar o gráfico em tempo real -->
 <script>
-
     var ctx = document.getElementById('graficoTempoReal').getContext('2d');
     var graficoTempoReal = new Chart(ctx, {
+        // Configuração inicial do gráfico
         type: 'line',
         data: {
             labels: [],
@@ -201,20 +273,22 @@
         }
     });
 
+    // Função para atualizar o gráfico em tempo real
     function atualizarGraficoTempoReal() {
+        // Fazendo uma solicitação AJAX para obter dados de métricas em tempo real
         fetch('http://localhost:3333/dashboard/metricas_tempo_real')
             .then(response => response.json())
             .then(data => {
                 if (data.cpu_percent !== null && data.ram_percent !== null && data.disco_percent !== null) {
-                    // Adiciona nova entrada de tempo
+                    // Adicionando nova entrada de tempo
                     graficoTempoReal.data.labels.push(new Date().toLocaleTimeString());
 
-                    // Adiciona os dados ao conjunto de dados correspondente
+                    // Adicionando dados aos conjuntos de dados correspondentes
                     graficoTempoReal.data.datasets[0].data.push(data.cpu_percent);
                     graficoTempoReal.data.datasets[1].data.push(data.ram_percent);
                     graficoTempoReal.data.datasets[2].data.push(data.disco_percent);
 
-                    // Limita o número de entradas no gráfico para 10
+                    // Limitando o número de entradas no gráfico para 10
                     if (graficoTempoReal.data.labels.length > 5) {
                         graficoTempoReal.data.labels.shift();
                         graficoTempoReal.data.datasets[0].data.shift();
@@ -222,7 +296,7 @@
                         graficoTempoReal.data.datasets[2].data.shift();
                     }
 
-                    // Atualiza o gráfico
+                    // Atualizando o gráfico
                     graficoTempoReal.update();
                 } else {
                     console.error('Valores nulos recebidos.');
@@ -231,8 +305,8 @@
             .catch(error => console.error('Erro ao obter dados para o gráfico:', error));
     }
 
+    // Atualizando o gráfico a cada 5 segundos
     setInterval(atualizarGraficoTempoReal, 5000);
-
 </script>
 
 </html>
