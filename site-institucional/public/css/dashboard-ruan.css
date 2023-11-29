@@ -6,6 +6,10 @@
 /* Zera as margens padrão do corpo da página */
 body {
     margin: 0;
+    background: linear-gradient(180deg, #4B3753 0%, #4B3753 0%, #4B3753 0.01%, rgba(90, 52, 169, 0.93) 9.09%,
+            #8565C9 18.18%, rgba(180, 153, 238, 0.96) 27.27%, rgba(170, 143, 225, 0.63) 39.58%,
+            rgba(206, 185, 249, 0.93) 50%, rgba(151, 116, 222, 0.68) 57.29%, rgba(161, 122, 243, 0.85) 64.58%,
+            rgba(167, 131, 242, 0.90) 70.31%, rgba(139, 89, 245, 0.63) 81.82%, #5A34A9 90.91%, rgba(75, 55, 83, 0.99) 100%);
 }
 
 /* Configurações para a seção principal da página */
@@ -19,21 +23,16 @@ body {
     height: 100%;
     width: 100%;
     color: white;
-    background: linear-gradient(180deg, #4B3753 0%, #4B3753 0%, #4B3753 0.01%, rgba(90, 52, 169, 0.93) 9.09%,
-            #8565C9 18.18%, rgba(180, 153, 238, 0.96) 27.27%, rgba(170, 143, 225, 0.63) 39.58%,
-            rgba(206, 185, 249, 0.93) 50%, rgba(151, 116, 222, 0.68) 57.29%, rgba(161, 122, 243, 0.85) 64.58%,
-            rgba(167, 131, 242, 0.90) 70.31%, rgba(139, 89, 245, 0.63) 81.82%, #5A34A9 90.91%, rgba(75, 55, 83, 0.99) 100%);
 }
 
 /* Estilo para o card de monitoramento */
 .card_monitoramento {
-    width: 91%;
-    min-height: 120vh;
+    width: 90%;
     height: fit-content;
     background-color: rgba(36, 36, 36, 1);
     margin: 3rem;
     position: absolute;
-    top: 52%;
+    top: 75%;
     left: 50%;
     transform: translate(-50%, -39%);
     display: flex;
@@ -269,7 +268,7 @@ progress::-webkit-progress-value {
 
 /* Estilo para a área inferior do dashboard */
 .area_inferior {
-    height: 50vh;
+    margin-bottom: 5%;
     display: flex;
     justify-content: space-around;
 }
@@ -469,15 +468,66 @@ progress::-webkit-progress-value {
 /* ... (Estilos para a área do meio) */
 .area_meio {
     text-align: center;
+    display: flex;
+    padding: 1%;
+    justify-content: space-between;
 }
 
-/* ... (Estilos para recomendações dentro da área do meio) */
-.area_meio .recomendacao_p {
-    display: inline-block;
-    vertical-align: middle;
-    background-color: #5A34A9;
-    padding: 1%;
+.area_meio_direita {
+    width: 50%;
+    display: flex;
+    justify-content: baseline;
+    margin-right: 10%;
+}
+
+.area_meio_esquerda {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.recomendacao {
+    background-color: rgb(0, 0, 0, 0);
     border-radius: 30px;
-    width: fit-content;
-    height: fit-content;
+    border: solid 2px white;
+    width: 100%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.alertas {
+    background-color: rgb(0, 0, 0, 0);
+    border-radius: 30px;
+    border: solid 2px white;
+    width: 50%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.recomendacao .recomendacao_p {
+    width: 90%;
+    background-color: #5A34A9;
+    border-radius: 30px;
+    padding: 1%;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.recomendacao .recomendacao_p:hover {
+    transform: scale(1.1);
+}
+
+.container_recomendacao_p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container_alerta {
+    display: flex;
+    justify-content: space-evenly;
+    color: gre;
 }

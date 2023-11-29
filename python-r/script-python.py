@@ -89,7 +89,7 @@ def obter_inserir_metricas_tempo_real():
             if cpu_percent > 90 or ram_percent > 90 or disco_percent > 90:
                 notificar_slack(f"Atenção: Uma métrica ultrapassou 90% - CPU: {cpu_percent}%, RAM: {ram_percent}%, Disco: {disco_percent}%")
 
-            time.sleep(5)
+            time.sleep(3)
 
 # Função para notificar no Slack
 def notificar_slack(mensagem):

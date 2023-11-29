@@ -1,5 +1,6 @@
 /* Estilo para a barra lateral */
 .barra_lateral {
+    height: 190vh;
     width: 100px;
     /* largura da barra lateral */
     background-color: rgba(36, 36, 36, 1);

@@ -33,7 +33,6 @@
                     </span>
                 </div>
             </div>
-
             <!-- Seção de monitoramento -->
             <div class="card_monitoramento">
                 <div class="area_topo">
@@ -42,7 +41,27 @@
                         <div class="painel">
                             <!-- Pop-up com informações sobre configurações -->
                             <div id="popup" class="popup">
-                                <!-- ... Conteúdo do pop-up ... -->
+                                <div onclick="fecharPopup()" class="close">X</div>
+                                <br><b>CPU:</b>
+                                A CPU, ou processador, é a unidade central de processamento do computador. Em um
+                                ambiente de call center, é ideal ter uma <b>CPU com pelo menos 4 núcleos</b>. Isso
+                                permite a
+                                execução eficiente de múltiplas tarefas simultaneamente, melhorando a capacidade de
+                                resposta do sistema durante chamadas e operações relacionadas.
+
+                                <br><br><b>RAM:</b>
+                                A RAM (memória de acesso aleatório) é essencial para a velocidade e desempenho do
+                                sistema. Com <b>8GB de RAM</b>, um call center pode lidar de maneira eficaz com várias
+                                aplicações abertas ao mesmo tempo. Isso evita atrasos no atendimento ao cliente,
+                                garantindo uma experiência mais fluida e produtiva.
+
+                                <br><br><b>Disco:</b>
+                                O armazenamento em disco é crucial para guardar dados essenciais do call center. Um
+                                <b>disco de 500GB</b> oferece espaço adequado para armazenar registros de chamadas,
+                                informações
+                                do cliente e documentos relevantes. Isso assegura uma gestão eficiente de dados,
+                                facilitando o acesso rápido às informações necessárias durante as interações com os
+                                clientes.
                             </div>
 
                             <!-- Barras de progresso para CPU, RAM e Disco -->
@@ -94,28 +113,44 @@
 
                 <!-- Área do meio do dashboard -->
                 <div class="area_meio">
-                    <!-- Recomendações para configurações inadequadas -->
-                    <h1 id="recomendacao_h1" style="display: none;">Recomendações</h1>
-                    <div class="recomendacao" id="recomendacao_nucleo" style="display: none;">
-                        <!-- Recomendação para Núcleos -->
-                        <div class="recomendacao_p">
-                            <p>Seu computador possui menos de 4 núcleos. Recomendamos um processador com pelo menos 4
-                                núcleos.</p>
+                    <!-- Área meio esquerda -->
+                    <div class="area_meio_esquerda">
+                        <div class="alertas">
+                            <div>
+                                <h1>Alertas</h1>
+                            </div>
+                            <div class="container_alerta">
+                                <div>
+                                    <p>CPU:</p>
+                                    <p>RAM:</p>
+                                    <p>DISCO:</p>
+                                </div>
+                                <div>
+                                    <p id="alerta_metrica_cpu"></p>
+                                    <p id="alerta_metrica_ram"></p>
+                                    <p id="alerta_metrica_disco"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="recomendacao" id="recomendacao_ram" style="display: none;">
-                        <!-- Recomendação para RAM -->
-                        <p class="recomendacao_p">Sua máquina possui menos de 8GB de RAM. Recomendamos aumentar a
-                            quantidade de RAM para
-                            melhorar o desempenho em multitarefas.</p>
+                    <!-- Área meio direita -->
+                    <div class="area_meio_direita">
+                        <!-- Recomendações para configurações inadequadas -->
+                        <div class="recomendacao">
+                            <div>
+                                <h1 id="recomendacao_h1">Recomendações</h1>
+                            </div>
+                            <div class="container_recomendacao_p">
+                                <p class="recomendacao_p" id="recomendacao_nucleo" style="display: none;">Melhore a
+                                    agilidade no call center com um upgrade para mais de 4 núcleos de RAM.</p>
+                                <p class="recomendacao_p" id="recomendacao_ram" style="display: none;">Potencialize seu
+                                    desempenho no call center com 8GB de RAM.</p>
+                                <p class="recomendacao_p" id="recomendacao_disco" style="display: none;">Evite problemas
+                                    de armazenamento no call center: invista em um disco de 500GB.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="recomendacao" id="recomendacao_disco" style="display: none;">
-                        <!-- Recomendação para Disco -->
-                        <p class="recomendacao_p">O espaço de armazenamento em disco da sua máquina é inferior a 500GB.
-                            Recomendamos considerar
-                            a aquisição de um disco com capacidade maior para armazenar dados de forma mais eficiente.
-                        </p>
-                    </div>
+
                 </div>
 
                 <!-- Área inferior do dashboard -->
@@ -241,19 +276,19 @@
         data: {
             labels: [],
             datasets: [{
-                label: 'CPU Percent',
+                label: 'CPU %',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 2,
                 data: [],
                 fill: false
             }, {
-                label: 'RAM Percent',
+                label: 'RAM %',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 2,
                 data: [],
                 fill: false
             }, {
-                label: 'DISCO Percent',
+                label: 'DISCO %',
                 borderColor: 'rgba(255, 205, 86, 1)',
                 borderWidth: 2,
                 data: [],
@@ -275,6 +310,7 @@
 
     // Função para atualizar o gráfico em tempo real
     function atualizarGraficoTempoReal() {
+
         // Fazendo uma solicitação AJAX para obter dados de métricas em tempo real
         fetch('http://localhost:3333/dashboard/metricas_tempo_real')
             .then(response => response.json())
@@ -301,12 +337,39 @@
                 } else {
                     console.error('Valores nulos recebidos.');
                 }
+
+                function atualizarMetrica() {
+                    if (data.cpu_percent >= 99) {
+                        document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: red;">Crítico</span>`;
+                    } else if (data.cpu_percent >= 49) {
+                        document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: yellow;">Alerta`;
+                    } else {
+                        document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: green;">Ideal`;
+                    }
+
+                    if (data.ram_percent >= 99) {
+                        document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: red;">Crítico</span>`;
+                    } else if (data.ram_percent >= 49) {
+                        document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: yellow;">Alerta`;
+                    } else {
+                        document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: green;">Ideal`;
+                    }
+
+                    if (data.disco_percent >= 99) {
+                        document.getElementById('alerta_metrica_disco').innerHTML = `<span style="color: red;">Crítico</span>`;
+                    } else if (data.disco_percent >= 90) {
+                        document.getElementById('alerta_metrica_disco').innerHTML = `<span style="color: yellow;">Alerta`;
+                    } else {
+                        document.getElementById('alerta_metrica_disco').innerHTML = `<span style="color: green;">Ideal`;
+                    }
+                }
+                atualizarMetrica()
             })
             .catch(error => console.error('Erro ao obter dados para o gráfico:', error));
     }
 
-    // Atualizando o gráfico a cada 5 segundos
-    setInterval(atualizarGraficoTempoReal, 5000);
+    // Atualizando o gráfico a cada 3 segundos
+    setInterval(atualizarGraficoTempoReal, 3000);
 </script>
 
 </html>
