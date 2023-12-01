@@ -1,73 +1,58 @@
+import java.util.*
+
 fun main() {
-    // Configuração do scanner para entrada de dados
-    val scanner = java.util.Scanner(System.`in`)
+    println("Bem-vindo!")
+
     var opcao: Int
 
-    // Loop principal do programa
     do {
-        // Exibição do menu
-        println("Bem-vindo! O que você deseja fazer?")
-        println("1 -> Fazer Login")
-        println("2 -> Sair")
+        println("\nEscolha uma opção:")
+        println("1. Fazer login e começar o monitoramento")
+        println("2. Sair")
 
-        try {
-            // Leitura da opção do usuário
-            opcao = scanner.nextInt()
+        opcao = readLine()?.toIntOrNull() ?: 0
 
-            when (opcao) {
-                1 -> {
-                    // Chama a função fazerLogin() e encerra o programa se o login for bem-sucedido
-                    if (fazerLogin(scanner)) {
-                        return
-                    }
-                }
-
-                2 -> {
-                    // Mensagem de despedida e encerra o programa
-                    println("Saindo da aplicação. Até mais!")
-                    return
-                }
-
-                else -> println("Opção inválida. Tente novamente.")
-            }
-        } catch (e: Exception) {
-            // Tratamento de exceção para entrada inválida
-            println("Por favor, insira uma opção válida.")
-            scanner.nextLine()
-            opcao = 0
+        when (opcao) {
+            1 -> fazerLoginEIniciarMonitoramento()
+            2 -> println("Até logo!")
+            else -> println("Opção inválida. Tente novamente.")
         }
+
     } while (opcao != 2)
 }
 
-// Função para realizar o login
-fun fazerLogin(scanner: java.util.Scanner): Boolean {
-    var email: String
-    var senha: String
+fun fazerLoginEIniciarMonitoramento() {
+    val scanner = Scanner(System.`in`)
 
-    // Loop para solicitar email e senha ao usuário
-    do {
-        println("Digite seu email: ")
-        email = scanner.next()
+    println("\nDigite seu e-mail:")
+    val email = scanner.nextLine()
 
-        println("Digite sua senha: ")
-        senha = scanner.next()
+    println("Digite sua senha:")
+    val senha = scanner.nextLine()
 
-        // Instanciação da classe Login para realizar o login
-        val login = Login()
-        val funcionario = login.realizarLogin(email, senha)
+    // Lógica de validação no SQL Server
+    val conexaoSql = Conexao.jdbcTemplateServer
 
-        // Verifica se o login foi bem-sucedido
-        if (funcionario != null) {
-            println("Login bem-sucedido. Bem-vindo, ${funcionario.nome}!")
-            return true
-        } else {
-            println("Falha no login. Verifique suas credenciais e tente novamente.")
-        }
+    val query = """
+        SELECT COUNT(*) FROM Funcionario
+        WHERE email = '$email' AND senha = '$senha'
+    """
 
-        // Pergunta se o usuário deseja tentar novamente
-        println("Deseja tentar novamente? (S/N): ")
-    } while (scanner.next().equals("S", ignoreCase = true))
+    val resultado = conexaoSql!!.queryForObject(query, Int::class.java)
 
-    // Retorna false se o usuário optar por não tentar novamente
-    return false
+    if (resultado == 1) {
+        println("\nLogin bem-sucedido! Esquentando as máquinas...")
+        Thread.sleep(2000)
+
+        println("Começando o monitoramento...")
+        Thread.sleep(2000)
+
+        // Executar script Python
+        val arquivoPython = scriptPadraoPython.criarScript(10, 1, 1)
+        scriptPadraoPython.executarScript(arquivoPython)
+
+        println("Monitoramento sendo bem-sucedido, muito bem!")
+    } else {
+        println("\nLogin inválido. Tente novamente.")
+    }
 }

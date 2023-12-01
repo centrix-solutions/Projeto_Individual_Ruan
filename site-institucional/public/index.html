@@ -341,15 +341,15 @@
                 function atualizarMetrica() {
                     if (data.cpu_percent >= 99) {
                         document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: red;">Crítico</span>`;
-                    } else if (data.cpu_percent >= 49) {
+                    } else if (data.cpu_percent >= 43.40) {
                         document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: yellow;">Alerta`;
                     } else {
                         document.getElementById('alerta_metrica_cpu').innerHTML = `<span style="color: green;">Ideal`;
                     }
 
-                    if (data.ram_percent >= 99) {
+                    if (data.ram_percent >= 91.60) {
                         document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: red;">Crítico</span>`;
-                    } else if (data.ram_percent >= 49) {
+                    } else if (data.ram_percent >= 76.40) {
                         document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: yellow;">Alerta`;
                     } else {
                         document.getElementById('alerta_metrica_ram').innerHTML = `<span style="color: green;">Ideal`;

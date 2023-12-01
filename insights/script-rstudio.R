@@ -1,16 +1,19 @@
-# Instale o pacote RMySQL se ainda não estiver instalado
-install.packages("RMySQL")
+# Instale o pacote 'odbc' se ainda não estiver instalado
+if (!requireNamespace("odbc", quietly = TRUE)) {
+  install.packages("odbc")
+}
 
 # Carregue o pacote
-library(RMySQL)
+library(odbc)
 
-# Defina os parâmetros da conexão
+# Defina os parâmetros da conexão para o SQL Server
 conexao <- dbConnect(
-  MySQL(),
-  user = "root",
-  password = "363776",
-  dbname = "projeto",
-  host = "localhost"
+  odbc(),
+  driver = "ODBC Driver 17 for SQL Server",  # ou o driver correspondente que você está usando
+  server = "44.197.21.59",
+  database = "Centrix",
+  uid = "sa",
+  pwd = "centrix"
 )
 
 # Execute uma consulta de exemplo
@@ -23,7 +26,7 @@ print(resultado)
 dbDisconnect(conexao)
 
 # Supondo que 'resultado' contenha os dados da tabela 'metricas_tempo_real'
-# (Certifique-se de executar o script de conexão do MySQL primeiro)
+# (Certifique-se de executar o script de conexão do SQL Server primeiro)
 
 # Calcule a média de cada métrica
 media_cpu <- mean(resultado$cpu_percent)
