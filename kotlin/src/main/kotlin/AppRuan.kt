@@ -1,4 +1,5 @@
 import java.util.*
+import java.util.concurrent.Executors
 
 fun main() {
     println("Bem-vindo!")
@@ -47,11 +48,14 @@ fun fazerLoginEIniciarMonitoramento() {
         println("Começando o monitoramento...")
         Thread.sleep(2000)
 
-        // Executar script Python
-        val arquivoPython = scriptPadraoPython.criarScript(10, 1, 1)
-        scriptPadraoPython.executarScript(arquivoPython)
+        // Executar script Python em uma thread separada
+        val executor = Executors.newSingleThreadExecutor()
+        executor.submit {
+            val arquivoPython = scriptPadraoPython.criarScript()
+            scriptPadraoPython.executarScript(arquivoPython)
 
-        println("Monitoramento sendo bem-sucedido, muito bem!")
+            println("Monitoramento sendo bem-sucedido, muito bem!")
+        }
     } else {
         println("\nLogin inválido. Tente novamente.")
     }
