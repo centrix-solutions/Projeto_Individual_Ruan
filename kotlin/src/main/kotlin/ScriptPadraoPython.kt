@@ -1,4 +1,5 @@
 import java.io.File
+import com.github.britooo.looca.api.core.Looca
 
 object ScriptPadraoPython {
 
@@ -64,7 +65,7 @@ import threading
 # Configurações de conexão e tokens
 mysql_cnx = connect(user='root', password='363776', host='localhost', database='centrix')
 sql_server_cnx = pymssql.connect(server='44.197.21.59', database='centrix', user='sa', password='centrix')
-slack_token = 'xoxb-5806834878417-6181633164562-UNgjvP47AfYcw63CbQhHVGXS'
+slack_token = 'xoxb-5806834878417-6181633164562-oINkxKK5LUXZXD3Xgwq7QNdi'
 slack_channel = '#notificacao-ruan'
 slack_client = WebClient(token=slack_token)
 
@@ -141,9 +142,25 @@ thread_metricas_tempo_real.start()
 
     }
 
+    private val looca = Looca()
+    private val so = looca.sistema.sistemaOperacional
+    private val executor = if (so.contains("Win")) {
+        "py"
+    } else {
+        "python3"
+    }
     fun executarScript(arquivo1: String, arquivo2: String) {
-        val pythonProcess1 = Runtime.getRuntime().exec("py $arquivo1")
-        val pythonProcess2 = Runtime.getRuntime().exec("py $arquivo2")
+        val pythonProcess1: Process
+        val pythonProcess2: Process
+
+        if (so.contains("Win")) {
+            pythonProcess1 = Runtime.getRuntime().exec("$executor $arquivo1")
+            pythonProcess2 = Runtime.getRuntime().exec("$executor $arquivo2")
+        } else {
+            pythonProcess1 = Runtime.getRuntime().exec("python3 script-python-info-sistema.py")
+            pythonProcess2 = Runtime.getRuntime().exec("python3 script-python-metricas-tempo-real.py")
+        }
+
         pythonProcesses = listOf(pythonProcess1, pythonProcess2)
     }
 

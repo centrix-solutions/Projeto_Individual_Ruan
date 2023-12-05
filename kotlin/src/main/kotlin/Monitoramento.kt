@@ -39,8 +39,7 @@ class Monitoramento {
         val query = """
         SELECT COUNT(*) FROM Funcionario
         WHERE email = '$email' AND senha = '$senha'
-    """
-
+        """
         val resultado = conexaoSql!!.queryForObject(query, Int::class.java)
 
         if (resultado == 1) {
