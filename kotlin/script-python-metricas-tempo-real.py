@@ -6,7 +6,7 @@ from slack_sdk import WebClient
 import threading
 
 # Configurações de conexão e tokens
-mysql_cnx = connect(user='root', password='363776', host='localhost', database='centrix')
+mysql_cnx = connect(user='root', password='urubu100', host='localhost', database='centrix')
 sql_server_cnx = pymssql.connect(server='44.197.21.59', database='centrix', user='sa', password='centrix')
 slack_token = 'xoxb-5806834878417-6181633164562-UNgjvP47AfYcw63CbQhHVGXS'
 slack_channel = '#notificacao-ruan'

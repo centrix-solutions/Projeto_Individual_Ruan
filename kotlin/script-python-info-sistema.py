@@ -5,7 +5,7 @@ from mysql.connector import connect
 import threading
 
 # Configurações de conexão e tokens
-mysql_cnx = connect(user='root', password='363776', host='localhost', database='centrix')
+mysql_cnx = connect(user='root', password='urubu100', host='localhost', database='centrix')
 sql_server_cnx = pymssql.connect(server='44.197.21.59', database='centrix', user='sa', password='centrix')
 
 # Função para monitorar informações do sistema
