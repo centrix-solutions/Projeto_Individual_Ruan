@@ -5,7 +5,7 @@ object Conexao {
 
     //substitua aqui
     var bancoUser = "root"
-    var bancoSenha = "363776"
+    var bancoSenha = "urubu100"
 
     var bancoUserServer = "sa"
     var bancoSenhaServer = "centrix"
